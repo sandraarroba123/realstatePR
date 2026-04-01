@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Puerto Rico Multifamily Investment Opportunities</title>
+  <meta name="description" content="A polished landing page for attracting U.S. investors interested in Puerto Rico multifamily opportunities, with built-in qualification filters and a Google Form embed." />
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg-soft: #0f1b2d;
+      --card: rgba(255,255,255,.08);
+      --line: rgba(255,255,255,.14);
+      --text: #f4f7fb;
+      --muted: #b9c7d9;
+      --gold: #d8b36a;
+      --gold-2: #f0d59b;
+      --accent: #8dc8ff;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --radius: 22px;
+      --max: 1200px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(216,179,106,.18), transparent 25%),
+        radial-gradient(circle at bottom left, rgba(141,200,255,.12), transparent 30%),
+        linear-gradient(180deg, #08111f 0%, #091728 30%, #08111f 100%);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(100% - 32px, var(--max));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background: rgba(8, 17, 31, 0.72);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding: 16px 0;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      box-shadow: 0 0 18px rgba(216,179,106,.6);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: none;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-weight: 700;
+      transition: .25s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      color: #101010;
+      box-shadow: 0 14px 34px rgba(216,179,106,.18);
+    }
+
+    .btn-primary:hover { transform: translateY(-2px); }
+
+    .btn-secondary {
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+
+    .hero {
+      padding: 78px 0 42px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .hero-copy,
+    .hero-card,
+    .card,
+    .filter-box,
+    .form-shell,
+    .timeline-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-copy {
+      padding: 42px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-copy::after {
+      content: "";
+      position: absolute;
+      inset: auto -10% -40% auto;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(216,179,106,.25), transparent 60%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(216,179,106,.12);
+      color: var(--gold-2);
+      border: 1px solid rgba(216,179,106,.22);
+      font-size: .86rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(2.3rem, 5vw, 4.5rem);
+      line-height: .98;
+      letter-spacing: -.03em;
+    }
+
+    .lead {
+      font-size: 1.08rem;
+      color: var(--muted);
+      max-width: 760px;
+      margin-bottom: 26px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin: 26px 0 30px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .metric {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.09);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+      color: var(--gold-2);
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: .94rem;
+    }
+
+    .hero-card {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 22px;
+    }
+
+    .check-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .check-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .check-dot {
+      min-width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      margin-top: 7px;
+      background: linear-gradient(135deg, var(--gold), var(--accent));
+      box-shadow: 0 0 12px rgba(141,200,255,.4);
+    }
+
+    .section {
+      padding: 34px 0;
+    }
+
+    .section-title {
+      max-width: 720px;
+      margin-bottom: 20px;
+    }
+
+    .section-title h2 {
+      margin: 0 0 10px;
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      letter-spacing: -.02em;
+    }
+
+    .section-title p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .benefits {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      padding: 24px;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 1.15rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: .95fr 1.05fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .filter-box,
+    .form-shell,
+    .timeline-card {
+      padding: 26px;
+    }
+
+    .investor-filter {
+      display: grid;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .filter-label {
+      font-size: .88rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    select,
+    input {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(8,17,31,.78);
+      color: var(--text);
+      padding: 14px 16px;
+      font-size: .98rem;
+      outline: none;
+    }
+
+    .filter-result {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+    }
+
+    .result-tag {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(141,200,255,.1);
+      color: var(--accent);
+      font-size: .84rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: rgba(216,179,106,.14);
+      color: var(--gold-2);
+      font-weight: 800;
+      margin-bottom: 14px;
+      border: 1px solid rgba(216,179,106,.25);
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .timeline-card small {
+      display: block;
+      color: var(--gold-2);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .timeline-card h3 {
+      margin: 0 0 10px;
+    }
+
+    .timeline-card p,
+    .form-shell p,
+    .filter-box p {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .form-frame {
+      margin-top: 18px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.1);
+      min-height: 880px;
+      background: #fff;
+    }
+
+    iframe {
+      width: 100%;
+      min-height: 880px;
+      border: none;
+      display: block;
+    }
+
+    .cta-band {
+      margin: 34px 0 10px;
+      padding: 30px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(216,179,106,.16), rgba(141,200,255,.08));
+      border: 1px solid rgba(255,255,255,.1);
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .footer {
+      padding: 36px 0 50px;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .tiny {
+      font-size: .84rem;
+      color: #9eb0c7;
+    }
+
+    @media (max-width: 1024px) {
+      .hero-grid,
+      .filter-grid,
+      .benefits,
+      .steps,
+      .timeline {
+        grid-template-columns: 1fr;
+      }
+
+      .metrics { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 680px) {
+      .hero-copy,
+      .hero-card,
+      .card,
+      .filter-box,
+      .form-shell,
+      .timeline-card {
+        padding: 20px;
+      }
+
+      h1 { font-size: 2.35rem; }
+
+      .nav { align-items: flex-start; flex-direction: column; }
+      .nav-links { width: 100%; justify-content: space-between; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container nav">
+      <a href="#top" class="brand">
+        <span class="brand-badge"></span>
+        Puerto Rico Investment Access
+      </a>
+      <div class="nav-links">
+        <a href="#benefits">Benefits</a>
+        <a href="#process">Process</a>
+        <a href="#qualify">Investor Filter</a>
+        <a href="#apply" class="btn btn-primary">Apply Now</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Curated Multifamily Opportunities in Puerto Rico</span>
+          <h1>Find stronger deals. Save time. Evaluate only opportunities that fit your investment criteria.</h1>
+          <p class="lead">
+            We help U.S. investors identify Puerto Rico multifamily opportunities aligned with their preferred strategy, budget, timeline, and income goals. Instead of reviewing random listings, you start with a filtered acquisition process built around the type of deal you actually want.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#apply">Complete Investor Profile</a>
+            <a class="btn btn-secondary" href="#qualify">Use Quick Filter</a>
+          </div>
+
+          <div class="metrics">
+            <div class="metric">
+              <strong>More Focus</strong>
+              <span>Review opportunities that match your real strategy, not generic leads.</span>
+            </div>
+            <div class="metric">
+              <strong>Better Fit</strong>
+              <span>Pre-qualification helps align cash flow, location, and timeline expectations.</span>
+            </div>
+            <div class="metric">
+              <strong>Less Friction</strong>
+              <span>Clear communication from day one helps move serious buyers faster.</span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-card">
+          <div>
+            <span class="eyebrow">Why investors respond</span>
+            <div class="check-list">
+              <div class="check-item">
+                <span class="check-dot"></span>
+                <div>
+                  <strong>Strategy-first intake</strong>
+                  <div class="tiny">Cash, owner financing, conventional, FHA, commercial, assumption, and more.</div>
+                </div>
+              </div>
+              <div class="check-item">
+                <span class="check-dot"></span>
+                <div>
+                  <strong>Deal alignment before outreach</strong>
+                  <div class="tiny">Unit count, municipalities, timeline, and acceptable annual cash flow are screened first.</div>
+                </div>
+              </div>
+              <div class="check-item">
+                <span class="check-dot"></span>
+                <div>
+                  <strong>Built for serious investors</strong>
+                  <div class="tiny">Designed to filter decision-makers and reduce wasted conversations.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-result">
+            <div class="result-tag">Ideal Investor Profile</div>
+            <strong>For buyers who want multifamily income, a clear plan, and a structured path to acquisition.</strong>
+            <p style="margin-top:10px; color:var(--muted);">
+              This page is especially strong for investors interested in 2+ unit properties, value-add opportunities, long-term rental income, refinancing plays, or direct acquisition in Puerto Rico.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="benefits">
+      <div class="container">
+        <div class="section-title">
+          <h2>Why this is attractive to U.S. investors</h2>
+          <p>Position the opportunity around clarity, speed, and deal-fit instead of vague promises.</p>
+        </div>
+
+        <div class="benefits">
+          <article class="card">
+            <h3>1. Pre-qualified opportunities</h3>
+            <p>Investors can express the exact strategy they prefer before reviewing deals, reducing time spent on properties that do not fit their model.</p>
+          </article>
+          <article class="card">
+            <h3>2. Puerto Rico focus</h3>
+            <p>The page is designed around Puerto Rico multifamily acquisitions, helping investors focus on municipalities, property size, and opportunity type from the start.</p>
+          </article>
+          <article class="card">
+            <h3>3. Serious lead filtering</h3>
+            <p>The built-in qualification flow identifies timeline, all-in budget, expected cash flow, and readiness, so stronger leads stand out immediately.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="qualify">
+      <div class="container filter-grid">
+        <div class="filter-box">
+          <div class="section-title" style="margin-bottom:0;">
+            <h2>Quick Investor Filter</h2>
+            <p>Use this mini-filter to help visitors self-identify before completing the full application.</p>
+          </div>
+
+          <div class="investor-filter">
+            <div>
+              <label class="filter-label" for="strategy">Preferred Strategy</label>
+              <select id="strategy">
+                <option value="owner">Owner Financing</option>
+                <option value="cash">Cash</option>
+                <option value="conv">Conventional</option>
+                <option value="commercial">Commercial</option>
+                <option value="fha">FHA</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="filter-label" for="budget">Estimated All-In Budget</label>
+              <select id="budget">
+                <option value="low">Under $75,000 upfront</option>
+                <option value="mid">$75,000 - $150,000</option>
+                <option value="high">$150,000+</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="filter-label" for="goal">Primary Goal</label>
+              <select id="goal">
+                <option value="passive">Passive Income</option>
+                <option value="flip">Flip / Resale</option>
+                <option value="refi">Refinance & Hold</option>
+                <option value="valueadd">Value-Add</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="filter-label" for="timeline">Purchase Timeline</label>
+              <select id="timeline">
+                <option value="fast">1 to 3 months</option>
+                <option value="medium">4 to 6 months</option>
+                <option value="later">6 to 12 months</option>
+                <option value="learning">Still researching</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="filter-result" id="filterResult">
+            <div class="result-tag">Suggested Path</div>
+            <strong>Owner-financing profile detected.</strong>
+            <p style="margin-top:10px;">This visitor may be a strong fit for flexible-entry multifamily deals with lower upfront cash needs and a faster review process. Send them to the full investor profile form.</p>
+          </div>
+        </div>
+
+        <div class="form-shell" id="apply">
+          <div class="section-title" style="margin-bottom:0;">
+            <h2>Full Investor Application</h2>
+            <p>
+              The current form requests contact information, strategy, all-in budget, preferred property type, target area in Puerto Rico, desired cash flow, exit strategy, readiness, and short-call availability.
+            </p>
+          </div>
+
+          <div class="hero-actions" style="margin-top:18px; margin-bottom:0;">
+            <a class="btn btn-primary" href="https://docs.google.com/forms/d/e/1FAIpQLSfDQ8-Ggilo7F4py6jeuR_Hb2w1uaV5ko66qNmuwH_YSMJscQ/viewform?usp=header" target="_blank" rel="noopener noreferrer">Open Form in New Tab</a>
+          </div>
+
+          <div class="form-frame">
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfDQ8-Ggilo7F4py6jeuR_Hb2w1uaV5ko66qNmuwH_YSMJscQ/viewform?embedded=true" loading="lazy" title="Investor Profile Form">
+              Loading…
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="process">
+      <div class="container">
+        <div class="section-title">
+          <h2>How the process works</h2>
+          <p>This section helps investors understand the journey quickly and builds confidence in your system.</p>
+        </div>
+
+        <div class="steps">
+          <article class="card">
+            <div class="step-number">01</div>
+            <h3>Submit investor profile</h3>
+            <p>The investor shares budget, preferred strategy, target areas, unit count, income expectations, and timing.</p>
+          </article>
+          <article class="card">
+            <div class="step-number">02</div>
+            <h3>We filter opportunities</h3>
+            <p>Only opportunities that fit the declared criteria move forward, creating a more focused acquisition pipeline.</p>
+          </article>
+          <article class="card">
+            <div class="step-number">03</div>
+            <h3>Review and move to next step</h3>
+            <p>Qualified investors can then evaluate opportunities that match their preferred acquisition style and investment objectives.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-title">
+          <h2>What serious investors usually want to know</h2>
+          <p>Add this section to answer objections before they happen.</p>
+        </div>
+
+        <div class="timeline">
+          <article class="timeline-card">
+            <small>Budget</small>
+            <h3>How much cash is needed upfront?</h3>
+            <p>Different strategies require different amounts of initial capital. The form helps identify the best fit before deals are presented.</p>
+          </article>
+          <article class="timeline-card">
+            <small>Area</small>
+            <h3>Which Puerto Rico markets interest you?</h3>
+            <p>Visitors can specify municipalities or geographic preferences, helping focus conversations from the start.</p>
+          </article>
+          <article class="timeline-card">
+            <small>Returns</small>
+            <h3>What level of cash flow is acceptable?</h3>
+            <p>The intake process helps identify income expectations early, so the opportunity set is better aligned.</p>
+          </article>
+          <article class="timeline-card">
+            <small>Timing</small>
+            <h3>How quickly can you move?</h3>
+            <p>Readiness matters. Investors can indicate whether they want immediate action or are still learning.</p>
+          </article>
+        </div>
+
+        <div class="cta-band">
+          <div>
+            <h2 style="margin:0 0 8px;">Ready to attract higher-quality investor leads?</h2>
+            <p style="margin:0; color:var(--muted);">Publish this on GitHub Pages and use it as your main landing page for ads, WhatsApp, and direct outreach.</p>
+          </div>
+          <a class="btn btn-primary" href="#apply">Start With the Investor Form</a>
+        </div>
+      <
