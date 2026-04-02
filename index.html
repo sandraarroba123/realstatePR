@@ -6,7 +6,7 @@
   <title>Puerto Rico Multifamily Investment Opportunities</title>
   <meta
     name="description"
-    content="Elegant bilingual landing page for attracting U.S. investors interested in Puerto Rico multifamily opportunities, with an integrated qualification form directly on the page."
+    content="Elegant bilingual landing page for attracting U.S. investors interested in Puerto Rico multifamily opportunities, with integrated form and animated multifamily property gallery."
   />
   <style>
     :root {
@@ -33,9 +33,15 @@
       color: var(--text);
       background: linear-gradient(180deg, var(--bg) 0%, #fbf8f2 45%, var(--bg-2) 100%);
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
     a { color: inherit; text-decoration: none; }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
 
     .container {
       width: min(100% - 32px, var(--max));
@@ -129,7 +135,10 @@
       color: #fff;
     }
 
-    .btn-primary:hover { background: var(--gold-dark); }
+    .btn-primary:hover {
+      background: var(--gold-dark);
+      transform: translateY(-1px);
+    }
 
     .btn-secondary {
       background: transparent;
@@ -244,7 +253,9 @@
     .filter-box p,
     .form-intro p,
     .footer,
-    .small {
+    .small,
+    .gallery-card p,
+    .gallery-meta {
       color: var(--muted);
       font-family: Arial, Helvetica, sans-serif;
     }
@@ -270,7 +281,9 @@
       line-height: 1.08;
     }
 
-    .cards {
+    .cards,
+    .process-grid,
+    .faq-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 18px;
@@ -280,7 +293,8 @@
     .step,
     .faq,
     .filter-box,
-    .form-panel {
+    .form-panel,
+    .gallery-card {
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: var(--radius);
@@ -295,17 +309,11 @@
 
     .card h3,
     .step h3,
-    .faq h3 {
+    .faq h3,
+    .gallery-card h3 {
       margin-top: 0;
       margin-bottom: 10px;
       font-size: 1.15rem;
-    }
-
-    .process-grid,
-    .faq-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
     }
 
     .step-number {
@@ -321,6 +329,63 @@
       font-family: Arial, Helvetica, sans-serif;
       font-weight: 700;
       color: var(--gold-dark);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .gallery-card {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .gallery-media {
+      position: relative;
+      overflow: hidden;
+      height: 280px;
+    }
+
+    .gallery-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.04);
+      transition: transform 0.9s ease, opacity 0.9s ease, filter 0.9s ease;
+      opacity: 0.9;
+      filter: saturate(0.95);
+    }
+
+    .gallery-card:hover .gallery-media img {
+      transform: scale(1.1);
+      opacity: 1;
+      filter: saturate(1.05);
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(31,26,23,0.45), rgba(31,26,23,0.06));
+      pointer-events: none;
+    }
+
+    .gallery-content {
+      padding: 20px;
+    }
+
+    .gallery-meta {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: #ece2d3;
+      color: var(--gold-dark);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
     }
 
     .qualify-grid {
@@ -439,13 +504,44 @@
       font-size: 0.95rem;
     }
 
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transition: opacity 0.9s ease, transform 0.9s ease, filter 0.9s ease;
+      will-change: transform, opacity;
+      filter: blur(4px);
+    }
+
+    .reveal-up {
+      transform: translateY(40px);
+    }
+
+    .reveal-left {
+      transform: translateX(-40px);
+    }
+
+    .reveal-right {
+      transform: translateX(40px);
+    }
+
+    .reveal-zoom {
+      transform: scale(0.94);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translate(0, 0) scale(1);
+      filter: blur(0);
+    }
+
     @media (max-width: 1024px) {
       .hero-grid,
       .qualify-grid,
       .cards,
       .process-grid,
       .faq-grid,
-      .metrics {
+      .metrics,
+      .gallery-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -459,8 +555,10 @@
       .form-panel,
       .card,
       .step,
-      .faq { padding: 20px; }
+      .faq,
+      .gallery-content { padding: 20px; }
       h1 { font-size: 2.35rem; }
+      .gallery-media { height: 240px; }
     }
   </style>
 </head>
@@ -477,6 +575,7 @@
         <button class="lang-btn" type="button" data-lang="es">Español</button>
 
         <a href="#benefits" data-i18n="navBenefits">Benefits</a>
+        <a href="#gallery" data-i18n="navGallery">Gallery</a>
         <a href="#process" data-i18n="navProcess">Process</a>
         <a href="#qualify" data-i18n="navForm">Investor Form</a>
         <a href="#qualify" class="btn btn-primary" data-i18n="navApply">Apply</a>
@@ -487,7 +586,7 @@
   <main id="top">
     <section class="hero">
       <div class="container hero-grid">
-        <div class="panel hero-copy">
+        <div class="panel hero-copy reveal reveal-left">
           <span class="eyebrow" data-i18n="heroEyebrow">Puerto Rico Multifamily Opportunities</span>
 
           <h1 data-i18n="heroTitle">
@@ -504,22 +603,22 @@
           </div>
 
           <div class="metrics">
-            <div class="metric">
+            <div class="metric reveal reveal-up">
               <strong data-i18n="metric1Title">Qualified Interest</strong>
               <span data-i18n="metric1Text">Filter for serious investors with real strategy, budget, and timeline.</span>
             </div>
-            <div class="metric">
+            <div class="metric reveal reveal-up">
               <strong data-i18n="metric2Title">Market Focus</strong>
               <span data-i18n="metric2Text">Conversations begin with Puerto Rico multifamily goals in mind.</span>
             </div>
-            <div class="metric">
+            <div class="metric reveal reveal-up">
               <strong data-i18n="metric3Title">Clear Positioning</strong>
               <span data-i18n="metric3Text">Present benefits elegantly and reduce weak or misaligned leads.</span>
             </div>
           </div>
         </div>
 
-        <aside class="panel hero-side">
+        <aside class="panel hero-side reveal reveal-right">
           <span class="eyebrow" data-i18n="sideEyebrow">Why investors respond</span>
 
           <div class="side-list">
@@ -549,23 +648,23 @@
 
     <section class="section" id="benefits">
       <div class="container">
-        <div class="section-title">
+        <div class="section-title reveal reveal-up">
           <h2 data-i18n="benefitsTitle">Why this benefits U.S. investors</h2>
           <p data-i18n="benefitsLead">Lead with clarity, not hype. Serious investors want an organized path, not vague promises.</p>
         </div>
 
         <div class="cards">
-          <article class="card">
+          <article class="card reveal reveal-up">
             <h3 data-i18n="benefit1Title">1. Better deal alignment</h3>
             <p data-i18n="benefit1Text">Investors can share the exact type of opportunity they want before reviewing any property details, which improves fit from the start.</p>
           </article>
 
-          <article class="card">
+          <article class="card reveal reveal-up">
             <h3 data-i18n="benefit2Title">2. Puerto Rico-specific focus</h3>
             <p data-i18n="benefit2Text">The page is centered around Puerto Rico multifamily opportunities, target municipalities, property size, and acquisition goals.</p>
           </article>
 
-          <article class="card">
+          <article class="card reveal reveal-up">
             <h3 data-i18n="benefit3Title">3. Less wasted time</h3>
             <p data-i18n="benefit3Text">By screening timeline, budget, and strategy first, follow-up conversations become more productive and more serious.</p>
           </article>
@@ -573,27 +672,74 @@
       </div>
     </section>
 
+    <section class="section" id="gallery">
+      <div class="container">
+        <div class="section-title reveal reveal-up">
+          <h2 data-i18n="galleryTitle">Sample Multifamily Residences</h2>
+          <p data-i18n="galleryLead">Use this section to visually communicate the type of multifamily opportunities investors may want to explore.</p>
+        </div>
+
+        <div class="gallery-grid">
+          <article class="gallery-card reveal reveal-left">
+            <div class="gallery-media">
+              <img src="images/multifamily-1.jpg" alt="Modern multifamily residence exterior" />
+              <div class="gallery-overlay"></div>
+            </div>
+            <div class="gallery-content">
+              <span class="gallery-meta" data-i18n="galleryTag1">Income Potential</span>
+              <h3 data-i18n="galleryCard1Title">Modern Multifamily Exterior</h3>
+              <p data-i18n="galleryCard1Text">A polished presentation helps investors quickly picture curb appeal, tenant demand, and long-term value.</p>
+            </div>
+          </article>
+
+          <article class="gallery-card reveal reveal-zoom">
+            <div class="gallery-media">
+              <img src="images/multifamily-2.jpg" alt="Three-unit multifamily residence" />
+              <div class="gallery-overlay"></div>
+            </div>
+            <div class="gallery-content">
+              <span class="gallery-meta" data-i18n="galleryTag2">Value Add</span>
+              <h3 data-i18n="galleryCard2Title">Three-Unit Residential Opportunity</h3>
+              <p data-i18n="galleryCard2Text">Ideal for buyers interested in repositioning, stronger rents, or long-term appreciation in targeted markets.</p>
+            </div>
+          </article>
+
+          <article class="gallery-card reveal reveal-right">
+            <div class="gallery-media">
+              <img src="images/multifamily-3.jpg" alt="Elegant multifamily property with multiple entrances" />
+              <div class="gallery-overlay"></div>
+            </div>
+            <div class="gallery-content">
+              <span class="gallery-meta" data-i18n="galleryTag3">Long-Term Hold</span>
+              <h3 data-i18n="galleryCard3Title">Elegant Multifamily Residence</h3>
+              <p data-i18n="galleryCard3Text">Useful for showing investors the kind of stable or scalable property profile that aligns with a buy-and-hold strategy.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="process">
       <div class="container">
-        <div class="section-title">
+        <div class="section-title reveal reveal-up">
           <h2 data-i18n="processTitle">How the process works</h2>
           <p data-i18n="processLead">Help investors understand the journey quickly and confidently.</p>
         </div>
 
         <div class="process-grid">
-          <article class="step">
+          <article class="step reveal reveal-up">
             <div class="step-number">01</div>
             <h3 data-i18n="process1Title">Investor profile submitted</h3>
             <p data-i18n="process1Text">The investor shares their budget, preferred strategy, target areas, desired cash flow, and timeline directly on this page.</p>
           </article>
 
-          <article class="step">
+          <article class="step reveal reveal-up">
             <div class="step-number">02</div>
             <h3 data-i18n="process2Title">Opportunity fit is reviewed</h3>
             <p data-i18n="process2Text">The information helps determine whether the investor is aligned with the type of Puerto Rico multifamily opportunities being presented.</p>
           </article>
 
-          <article class="step">
+          <article class="step reveal reveal-up">
             <div class="step-number">03</div>
             <h3 data-i18n="process3Title">Qualified follow-up begins</h3>
             <p data-i18n="process3Text">Strong leads can move into a more focused conversation around acquisition criteria, readiness, and next steps.</p>
@@ -604,7 +750,7 @@
 
     <section class="section" id="qualify">
       <div class="container qualify-grid">
-        <div class="filter-box">
+        <div class="filter-box reveal reveal-left">
           <div class="section-title" style="margin-bottom:0;">
             <h2 data-i18n="filterTitle">Quick Investor Filter</h2>
             <p data-i18n="filterLead">This elegant mini-filter helps visitors identify whether they are a strong fit before completing the full profile.</p>
@@ -661,7 +807,7 @@
           </div>
         </div>
 
-        <div class="form-panel">
+        <div class="form-panel reveal reveal-right">
           <div class="form-intro">
             <div class="section-title" style="margin-bottom:0;">
               <h2 data-i18n="formTitle">Investor Profile Form</h2>
@@ -801,29 +947,29 @@
 
     <section class="section">
       <div class="container">
-        <div class="section-title">
+        <div class="section-title reveal reveal-up">
           <h2 data-i18n="faqTitle">Questions serious investors usually ask</h2>
           <p data-i18n="faqLead">This section helps answer objections before the conversation even begins.</p>
         </div>
 
         <div class="faq-grid">
-          <article class="faq">
+          <article class="faq reveal reveal-up">
             <h3 data-i18n="faq1Title">How much capital is needed upfront?</h3>
             <p data-i18n="faq1Text">That depends on the investor’s preferred strategy. The form helps identify whether the investor is looking for cash, owner financing, leverage, or another path.</p>
           </article>
 
-          <article class="faq">
+          <article class="faq reveal reveal-up">
             <h3 data-i18n="faq2Title">Which markets in Puerto Rico are targeted?</h3>
             <p data-i18n="faq2Text">Visitors can specify municipalities or geographic preferences, helping keep the deal flow more relevant from the beginning.</p>
           </article>
 
-          <article class="faq">
+          <article class="faq reveal reveal-up">
             <h3 data-i18n="faq3Title">What kind of returns are being sought?</h3>
             <p data-i18n="faq3Text">Monthly or annual cash-flow expectations can be captured early so the opportunity pipeline is aligned with the investor’s real goals.</p>
           </article>
         </div>
 
-        <div class="cta-band">
+        <div class="cta-band reveal reveal-zoom">
           <div>
             <h2 style="margin:0 0 8px;" data-i18n="ctaTitle">Publish a refined investor experience on GitHub Pages.</h2>
             <p class="small" style="margin:0;" data-i18n="ctaText">This version removes the glass effect and replaces it with a more timeless, elegant, high-trust look.</p>
@@ -851,6 +997,7 @@
       en: {
         brand: "Puerto Rico Investment Access",
         navBenefits: "Benefits",
+        navGallery: "Gallery",
         navProcess: "Process",
         navForm: "Investor Form",
         navApply: "Apply",
@@ -886,6 +1033,18 @@
         benefit2Text: "The page is centered around Puerto Rico multifamily opportunities, target municipalities, property size, and acquisition goals.",
         benefit3Title: "3. Less wasted time",
         benefit3Text: "By screening timeline, budget, and strategy first, follow-up conversations become more productive and more serious.",
+
+        galleryTitle: "Sample Multifamily Residences",
+        galleryLead: "Use this section to visually communicate the type of multifamily opportunities investors may want to explore.",
+        galleryTag1: "Income Potential",
+        galleryCard1Title: "Modern Multifamily Exterior",
+        galleryCard1Text: "A polished presentation helps investors quickly picture curb appeal, tenant demand, and long-term value.",
+        galleryTag2: "Value Add",
+        galleryCard2Title: "Three-Unit Residential Opportunity",
+        galleryCard2Text: "Ideal for buyers interested in repositioning, stronger rents, or long-term appreciation in targeted markets.",
+        galleryTag3: "Long-Term Hold",
+        galleryCard3Title: "Elegant Multifamily Residence",
+        galleryCard3Text: "Useful for showing investors the kind of stable or scalable property profile that aligns with a buy-and-hold strategy.",
 
         processTitle: "How the process works",
         processLead: "Help investors understand the journey quickly and confidently.",
@@ -993,6 +1152,7 @@
       es: {
         brand: "Acceso de Inversión en Puerto Rico",
         navBenefits: "Beneficios",
+        navGallery: "Galería",
         navProcess: "Proceso",
         navForm: "Formulario",
         navApply: "Aplicar",
@@ -1028,6 +1188,18 @@
         benefit2Text: "La página está centrada en oportunidades multifamiliares en Puerto Rico, municipios objetivo, tamaño de propiedad y metas de adquisición.",
         benefit3Title: "3. Menos tiempo perdido",
         benefit3Text: "Al evaluar primero tiempo, presupuesto y estrategia, las conversaciones de seguimiento se vuelven más productivas y más serias.",
+
+        galleryTitle: "Residencias Multifamiliares de Muestra",
+        galleryLead: "Usa esta sección para comunicar visualmente el tipo de oportunidades multifamiliares que los inversionistas pueden querer explorar.",
+        galleryTag1: "Potencial de Ingreso",
+        galleryCard1Title: "Exterior Multifamiliar Moderno",
+        galleryCard1Text: "Una presentación pulida ayuda a que el inversionista visualice rápidamente atractivo exterior, demanda de inquilinos y valor a largo plazo.",
+        galleryTag2: "Mejora de Valor",
+        galleryCard2Title: "Oportunidad Residencial de Tres Unidades",
+        galleryCard2Text: "Ideal para compradores interesados en reposicionamiento, mejores rentas o apreciación a largo plazo en mercados objetivo.",
+        galleryTag3: "Mantener a Largo Plazo",
+        galleryCard3Title: "Residencia Multifamiliar Elegante",
+        galleryCard3Text: "Útil para mostrar el tipo de propiedad estable o escalable que encaja con una estrategia de comprar y mantener.",
 
         processTitle: "Cómo funciona el proceso",
         processLead: "Ayuda a los inversionistas a entender el recorrido de forma rápida y con confianza.",
@@ -1161,25 +1333,18 @@
         defaultTag: "Suggested Path",
         defaultHeadline: "Balanced investor profile detected.",
         defaultCopy: "This visitor appears to be a strong fit for the full investor profile and a focused follow-up conversation.",
-
         ownerHeadline: "Owner-financing profile detected.",
         ownerCopy: "This visitor may be a strong fit for flexible-entry multifamily opportunities with lower upfront cash needs and faster review potential.",
-
         cashHeadline: "Cash-ready profile detected.",
         cashCopy: "This visitor may respond well to direct acquisition opportunities, quicker closings, and stronger positioning for competitive deals.",
-
         passiveHeadline: "Passive-income profile detected.",
         passiveCopy: "Emphasize stabilized or rent-ready multifamily properties, long-term income, and consistency of cash flow.",
-
         flipHeadline: "Resale-focused profile detected.",
         flipCopy: "Highlight repositioning opportunities, margin potential, neighborhood upside, and clear exit logic.",
-
         refiHeadline: "Refinance-and-hold profile detected.",
         refiCopy: "This investor may value opportunities that can be improved, stabilized, and refinanced into longer-term cash flow.",
-
         highPriority: "High Priority Lead",
         nurtureLead: "Nurture Lead",
-
         commercialLowHeadline: "Commercial strategy may require stronger reserves.",
         commercialLowCopy: "This lead may still be viable, but follow-up should confirm capital structure, financing expectations, and acquisition capacity."
       },
@@ -1187,25 +1352,18 @@
         defaultTag: "Ruta Sugerida",
         defaultHeadline: "Se detectó un perfil balanceado de inversionista.",
         defaultCopy: "Este visitante parece ser un buen candidato para completar el perfil completo y pasar a una conversación de seguimiento más enfocada.",
-
         ownerHeadline: "Se detectó un perfil de financiamiento por dueño.",
         ownerCopy: "Este visitante puede ser un buen candidato para oportunidades multifamiliares con entrada flexible, menor necesidad de efectivo inicial y revisión más rápida.",
-
         cashHeadline: "Se detectó un perfil listo para comprar en efectivo.",
         cashCopy: "Este visitante puede responder bien a oportunidades de adquisición directa, cierres más rápidos y mejor posicionamiento para negocios competitivos.",
-
         passiveHeadline: "Se detectó un perfil de ingreso pasivo.",
         passiveCopy: "Conviene enfatizar propiedades multifamiliares estabilizadas o listas para rentar, ingreso a largo plazo y consistencia en el flujo de efectivo.",
-
         flipHeadline: "Se detectó un perfil enfocado en reventa.",
         flipCopy: "Conviene resaltar oportunidades de reposicionamiento, potencial de margen, crecimiento del vecindario y lógica clara de salida.",
-
         refiHeadline: "Se detectó un perfil de refinanciar y mantener.",
         refiCopy: "Este inversionista puede valorar oportunidades que se puedan mejorar, estabilizar y refinanciar para convertirlas en flujo de efectivo a largo plazo.",
-
         highPriority: "Lead de Alta Prioridad",
         nurtureLead: "Lead para Nutrir",
-
         commercialLowHeadline: "La estrategia comercial puede requerir reservas más fuertes.",
         commercialLowCopy: "Este lead aún puede ser viable, pero el seguimiento debe confirmar estructura de capital, expectativas de financiamiento y capacidad de adquisición."
       }
@@ -1314,6 +1472,21 @@
       successMessage.style.display = "block";
       successMessage.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
+
+    const revealItems = document.querySelectorAll(".reveal");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        } else {
+          entry.target.classList.remove("visible");
+        }
+      });
+    }, {
+      threshold: 0.18
+    });
+
+    revealItems.forEach((item) => observer.observe(item));
 
     document.getElementById("year").textContent = new Date().getFullYear();
     applyTranslations("en");
