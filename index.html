@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- VERSION: menu-hamburger-tabs-switch-v2 -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -83,37 +84,155 @@
       background: var(--gold);
     }
 
-    .nav-links {
+    .nav-actions {
       display: flex;
-      gap: 14px;
       align-items: center;
-      color: var(--muted);
-      flex-wrap: wrap;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 0.95rem;
+      gap: 12px;
+      margin-left: auto;
     }
 
-    .lang-btn {
-      padding: 10px 14px;
-      border-radius: 999px;
+    .language-switch {
+      position: relative;
+      display: inline-grid;
+      grid-template-columns: 1fr 1fr;
+      width: 134px;
+      padding: 4px;
       border: 1px solid var(--line);
+      border-radius: 999px;
       background: #fff;
-      color: var(--text);
+      box-shadow: 0 8px 22px rgba(34, 24, 15, 0.06);
       font-family: Arial, Helvetica, sans-serif;
-      font-size: 0.88rem;
-      font-weight: 700;
+      overflow: hidden;
+    }
+
+    .language-switch::before {
+      content: "";
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: calc(50% - 4px);
+      height: calc(100% - 8px);
+      border-radius: 999px;
+      background: var(--gold);
+      box-shadow: 0 8px 18px rgba(143, 107, 61, 0.25);
+      transform: translateX(100%);
+      transition: transform 0.28s ease;
+      z-index: 0;
+    }
+
+    .language-switch[data-active="es"]::before {
+      transform: translateX(0);
+    }
+
+    .lang-option {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+      padding: 9px 12px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.82rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
       cursor: pointer;
+      transition: color 0.22s ease;
+    }
+
+    .lang-option.active {
+      color: #fff;
+    }
+
+    .menu-toggle {
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: #fff;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      box-shadow: 0 8px 22px rgba(34, 24, 15, 0.06);
+      transition: 0.25s ease;
+    }
+
+    .menu-toggle span {
+      width: 21px;
+      height: 2px;
+      border-radius: 99px;
+      background: var(--text);
+      transition: 0.25s ease;
+    }
+
+    .menu-toggle:hover {
+      border-color: var(--gold);
+      transform: translateY(-1px);
+    }
+
+    .menu-toggle.active span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-toggle.active span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .nav-links {
+      position: absolute;
+      top: calc(100% + 12px);
+      right: max(16px, calc((100vw - var(--max)) / 2));
+      width: min(92vw, 360px);
+      padding: 16px;
+      background: rgba(255, 253, 249, 0.98);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: 0 22px 60px rgba(34, 24, 15, 0.16);
+      backdrop-filter: blur(10px);
+      display: grid;
+      gap: 10px;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      opacity: 0;
+      transform: translateY(-8px) scale(0.98);
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .nav-links.open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 14px;
+      border-radius: 16px;
+      border: 1px solid transparent;
+      color: var(--muted);
+      font-weight: 700;
       transition: 0.2s ease;
     }
 
-    .lang-btn.active {
-      background: var(--gold);
-      color: #fff;
-      border-color: var(--gold);
+    .nav-links a:hover {
+      color: var(--text);
+      background: var(--surface-2);
+      border-color: var(--line);
     }
 
-    .lang-btn:hover {
-      border-color: var(--gold);
+    .nav-links .btn {
+      color: #fff;
+      justify-content: center;
     }
 
     .btn {
@@ -279,6 +398,187 @@
       margin: 0 0 10px;
       font-size: clamp(1.8rem, 3vw, 3rem);
       line-height: 1.08;
+    }
+
+    .pr-tabs-panel {
+      position: relative;
+      overflow: hidden;
+      padding: 28px;
+      background: linear-gradient(135deg, rgba(255,253,249,0.96), rgba(248,243,235,0.92));
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .pr-tabs-panel::before {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      right: -90px;
+      top: -120px;
+      border-radius: 50%;
+      background: rgba(178, 138, 82, 0.14);
+      filter: blur(2px);
+      pointer-events: none;
+    }
+
+    .pr-tab-buttons {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 22px;
+      z-index: 1;
+    }
+
+    .pr-tab-btn {
+      min-height: 58px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      color: var(--muted);
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.22s ease, background 0.22s ease, color 0.22s ease, border-color 0.22s ease;
+    }
+
+    .pr-tab-btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--gold);
+    }
+
+    .pr-tab-btn.active {
+      background: var(--gold);
+      color: #fff;
+      border-color: var(--gold);
+      box-shadow: 0 14px 28px rgba(143, 107, 61, 0.22);
+    }
+
+    .pr-tab-stage {
+      position: relative;
+      min-height: 285px;
+      z-index: 1;
+    }
+
+    .pr-tab-content {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: 0.88fr 1.12fr;
+      gap: 22px;
+      align-items: stretch;
+      opacity: 0;
+      transform: translateX(34px);
+      pointer-events: none;
+      transition: opacity 0.38s ease, transform 0.38s ease;
+    }
+
+    .pr-tab-content.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+      position: relative;
+    }
+
+    .pr-visual {
+      border-radius: 24px;
+      min-height: 260px;
+      background:
+        radial-gradient(circle at 25% 25%, rgba(255,255,255,0.82), transparent 30%),
+        linear-gradient(135deg, #d9c3a2, #8f6b3d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .pr-visual::before,
+    .pr-visual::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(255,255,255,0.42);
+      border-radius: 999px;
+      animation: orbitMove 7s linear infinite;
+    }
+
+    .pr-visual::before {
+      width: 220px;
+      height: 90px;
+      transform: rotate(-18deg);
+    }
+
+    .pr-visual::after {
+      width: 280px;
+      height: 128px;
+      transform: rotate(22deg);
+      animation-duration: 9s;
+      animation-direction: reverse;
+    }
+
+    .pr-icon {
+      position: relative;
+      z-index: 1;
+      width: 112px;
+      height: 112px;
+      border-radius: 34px;
+      background: rgba(255,255,255,0.24);
+      border: 1px solid rgba(255,255,255,0.42);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.2rem;
+      backdrop-filter: blur(8px);
+      animation: softFloat 4s ease-in-out infinite;
+    }
+
+    .pr-copy {
+      padding: 8px 4px;
+    }
+
+    .pr-copy h3 {
+      margin: 0 0 12px;
+      font-size: clamp(1.45rem, 2.2vw, 2.25rem);
+      line-height: 1.1;
+    }
+
+    .pr-copy p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1rem;
+    }
+
+    .pr-points {
+      display: grid;
+      gap: 10px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .pr-points li {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    @keyframes softFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes orbitMove {
+      0% { opacity: 0.55; transform: rotate(0deg) scale(1); }
+      50% { opacity: 0.9; transform: rotate(180deg) scale(1.04); }
+      100% { opacity: 0.55; transform: rotate(360deg) scale(1); }
     }
 
     .cards,
@@ -593,7 +893,10 @@
     }
 
     @media (max-width: 720px) {
-      .nav { flex-direction: column; align-items: flex-start; }
+      .nav { align-items: center; }
+      .brand { font-size: 0.78rem; letter-spacing: 0.08em; }
+      .language-switch { width: 118px; }
+      .nav-actions { gap: 8px; }
       .field-row { grid-template-columns: 1fr; }
       .hero-copy,
       .hero-side,
@@ -605,6 +908,11 @@
       .gallery-content { padding: 20px; }
       h1 { font-size: 2.35rem; }
       .gallery-media { height: 240px; }
+      .pr-tabs-panel { padding: 18px; }
+      .pr-tab-buttons { grid-template-columns: repeat(2, 1fr); }
+      .pr-tab-stage { min-height: 520px; }
+      .pr-tab-content { grid-template-columns: 1fr; }
+      .pr-visual { min-height: 210px; }
 
       .whatsapp-float {
         width: 60px;
@@ -624,11 +932,21 @@
         <span data-i18n="brand">Puerto Rico Investment Access</span>
       </a>
 
-      <div class="nav-links">
-        <button class="lang-btn active" type="button" data-lang="en">English</button>
-        <button class="lang-btn" type="button" data-lang="es">Español</button>
+      <div class="nav-actions">
+        <div class="language-switch" role="group" aria-label="Language selector" data-active="en">
+          <button class="lang-option" type="button" data-lang="es" aria-label="Cambiar a español">ESP</button>
+          <button class="lang-option active" type="button" data-lang="en" aria-label="Switch to English">ENG</button>
+        </div>
 
-        <a href="#benefits" data-i18n="navBenefits">Benefits</a>
+        <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <div class="nav-links" id="siteMenu">
+        <a href="#benefits" data-i18n="navBenefits">Why Puerto Rico</a>
         <a href="#gallery" data-i18n="navGallery">Gallery</a>
         <a href="#process" data-i18n="navProcess">Process</a>
         <a href="#qualify" data-i18n="navForm">Investor Form</a>
@@ -703,25 +1021,71 @@
     <section class="section" id="benefits">
       <div class="container">
         <div class="section-title reveal reveal-up">
-          <h2 data-i18n="benefitsTitle">Why this benefits U.S. investors</h2>
-          <p data-i18n="benefitsLead">Lead with clarity, not hype. Serious investors want an organized path, not vague promises.</p>
+          <h2 data-i18n="benefitsTitle">Why choose Puerto Rico?</h2>
+          <p data-i18n="benefitsLead">A clear way to show investors the strongest reasons Puerto Rico can make sense for multifamily acquisitions.</p>
         </div>
 
-        <div class="cards">
-          <article class="card reveal reveal-up">
-            <h3 data-i18n="benefit1Title">1. Better deal alignment</h3>
-            <p data-i18n="benefit1Text">Investors can share the exact type of opportunity they want before reviewing any property details, which improves fit from the start.</p>
-          </article>
+        <div class="pr-tabs-panel reveal reveal-up">
+          <div class="pr-tab-buttons" role="tablist" aria-label="Puerto Rico investment reasons">
+            <button class="pr-tab-btn active" type="button" data-tab="market" data-i18n="prTab1">Market Access</button>
+            <button class="pr-tab-btn" type="button" data-tab="demand" data-i18n="prTab2">Rental Demand</button>
+            <button class="pr-tab-btn" type="button" data-tab="entry" data-i18n="prTab3">Entry Options</button>
+            <button class="pr-tab-btn" type="button" data-tab="lifestyle" data-i18n="prTab4">Lifestyle Appeal</button>
+          </div>
 
-          <article class="card reveal reveal-up">
-            <h3 data-i18n="benefit2Title">2. Puerto Rico-specific focus</h3>
-            <p data-i18n="benefit2Text">The page is centered around Puerto Rico multifamily opportunities, target municipalities, property size, and acquisition goals.</p>
-          </article>
+          <div class="pr-tab-stage">
+            <article class="pr-tab-content active" data-tab-panel="market">
+              <div class="pr-visual"><div class="pr-icon">📍</div></div>
+              <div class="pr-copy">
+                <h3 data-i18n="prMarketTitle">A U.S. market with a distinct local advantage</h3>
+                <p data-i18n="prMarketText">Puerto Rico gives investors exposure to a U.S. jurisdiction while still offering neighborhood-by-neighborhood inefficiencies that can create opportunity for prepared buyers.</p>
+                <ul class="pr-points">
+                  <li data-i18n="prMarketPoint1">U.S. dollar and U.S. banking familiarity</li>
+                  <li data-i18n="prMarketPoint2">Strong local knowledge can improve deal selection</li>
+                  <li data-i18n="prMarketPoint3">Multifamily assets can serve both local and relocation demand</li>
+                </ul>
+              </div>
+            </article>
 
-          <article class="card reveal reveal-up">
-            <h3 data-i18n="benefit3Title">3. Less wasted time</h3>
-            <p data-i18n="benefit3Text">By screening timeline, budget, and strategy first, follow-up conversations become more productive and more serious.</p>
-          </article>
+            <article class="pr-tab-content" data-tab-panel="demand">
+              <div class="pr-visual"><div class="pr-icon">🏘️</div></div>
+              <div class="pr-copy">
+                <h3 data-i18n="prDemandTitle">Housing demand supports income-focused strategies</h3>
+                <p data-i18n="prDemandText">Multifamily properties can appeal to investors looking for rental income, tenant diversification, and long-term hold potential in selected areas.</p>
+                <ul class="pr-points">
+                  <li data-i18n="prDemandPoint1">Multiple units can reduce dependency on one tenant</li>
+                  <li data-i18n="prDemandPoint2">Rent-ready improvements may increase property performance</li>
+                  <li data-i18n="prDemandPoint3">Targeted municipalities help focus the search</li>
+                </ul>
+              </div>
+            </article>
+
+            <article class="pr-tab-content" data-tab-panel="entry">
+              <div class="pr-visual"><div class="pr-icon">🤝</div></div>
+              <div class="pr-copy">
+                <h3 data-i18n="prEntryTitle">Flexible acquisition structures may open the door</h3>
+                <p data-i18n="prEntryText">Some opportunities may be evaluated through cash, conventional financing, commercial financing, FHA, or owner-financing conversations depending on the property and seller situation.</p>
+                <ul class="pr-points">
+                  <li data-i18n="prEntryPoint1">Better fit when strategy and budget are clear upfront</li>
+                  <li data-i18n="prEntryPoint2">Owner-financing conversations can help qualified buyers move faster</li>
+                  <li data-i18n="prEntryPoint3">Filtering reduces weak or misaligned leads</li>
+                </ul>
+              </div>
+            </article>
+
+            <article class="pr-tab-content" data-tab-panel="lifestyle">
+              <div class="pr-visual"><div class="pr-icon">🌴</div></div>
+              <div class="pr-copy">
+                <h3 data-i18n="prLifestyleTitle">A place investors can understand beyond numbers</h3>
+                <p data-i18n="prLifestyleText">Puerto Rico combines culture, location, and lifestyle appeal with practical real estate goals, which can strengthen investor interest when the opportunity is presented clearly.</p>
+                <ul class="pr-points">
+                  <li data-i18n="prLifestylePoint1">Strong emotional connection for many U.S. buyers</li>
+                  <li data-i18n="prLifestylePoint2">Appeal for long-term ownership and relocation-minded investors</li>
+                  <li data-i18n="prLifestylePoint3">Clear presentation helps convert curiosity into qualified interest</li>
+                </ul>
+              </div>
+            </article>
+          </div>
         </div>
       </div>
     </section>
@@ -1052,7 +1416,7 @@
     const translations = {
       en: {
         brand: "Puerto Rico Investment Access",
-        navBenefits: "Benefits",
+        navBenefits: "Why Puerto Rico",
         navGallery: "Gallery",
         navProcess: "Process",
         navForm: "Investor Form",
@@ -1081,14 +1445,38 @@
         idealFitTag: "Ideal fit",
         idealFitText: "Best for investors interested in 2+ unit properties, value-add acquisitions, owner financing structures, long-term rental income, or refinance-and-hold strategies.",
 
-        benefitsTitle: "Why this benefits U.S. investors",
-        benefitsLead: "Lead with clarity, not hype. Serious investors want an organized path, not vague promises.",
+        benefitsTitle: "Why choose Puerto Rico?",
+        benefitsLead: "A clear way to show investors the strongest reasons Puerto Rico can make sense for multifamily acquisitions.",
         benefit1Title: "1. Better deal alignment",
         benefit1Text: "Investors can share the exact type of opportunity they want before reviewing any property details, which improves fit from the start.",
         benefit2Title: "2. Puerto Rico-specific focus",
         benefit2Text: "The page is centered around Puerto Rico multifamily opportunities, target municipalities, property size, and acquisition goals.",
         benefit3Title: "3. Less wasted time",
         benefit3Text: "By screening timeline, budget, and strategy first, follow-up conversations become more productive and more serious.",
+        prTab1: "Market Access",
+        prTab2: "Rental Demand",
+        prTab3: "Entry Options",
+        prTab4: "Lifestyle Appeal",
+        prMarketTitle: "A U.S. market with a distinct local advantage",
+        prMarketText: "Puerto Rico gives investors exposure to a U.S. jurisdiction while still offering neighborhood-by-neighborhood inefficiencies that can create opportunity for prepared buyers.",
+        prMarketPoint1: "U.S. dollar and U.S. banking familiarity",
+        prMarketPoint2: "Strong local knowledge can improve deal selection",
+        prMarketPoint3: "Multifamily assets can serve both local and relocation demand",
+        prDemandTitle: "Housing demand supports income-focused strategies",
+        prDemandText: "Multifamily properties can appeal to investors looking for rental income, tenant diversification, and long-term hold potential in selected areas.",
+        prDemandPoint1: "Multiple units can reduce dependency on one tenant",
+        prDemandPoint2: "Rent-ready improvements may increase property performance",
+        prDemandPoint3: "Targeted municipalities help focus the search",
+        prEntryTitle: "Flexible acquisition structures may open the door",
+        prEntryText: "Some opportunities may be evaluated through cash, conventional financing, commercial financing, FHA, or owner-financing conversations depending on the property and seller situation.",
+        prEntryPoint1: "Better fit when strategy and budget are clear upfront",
+        prEntryPoint2: "Owner-financing conversations can help qualified buyers move faster",
+        prEntryPoint3: "Filtering reduces weak or misaligned leads",
+        prLifestyleTitle: "A place investors can understand beyond numbers",
+        prLifestyleText: "Puerto Rico combines culture, location, and lifestyle appeal with practical real estate goals, which can strengthen investor interest when the opportunity is presented clearly.",
+        prLifestylePoint1: "Strong emotional connection for many U.S. buyers",
+        prLifestylePoint2: "Appeal for long-term ownership and relocation-minded investors",
+        prLifestylePoint3: "Clear presentation helps convert curiosity into qualified interest",
 
         galleryTitle: "Sample Multifamily Residences",
         galleryLead: "Explore the type of multifamily properties and investment profiles that may align with your acquisition goals.",
@@ -1206,7 +1594,7 @@
 
       es: {
         brand: "Acceso de Inversión en Puerto Rico",
-        navBenefits: "Beneficios",
+        navBenefits: "Por qué PR",
         navGallery: "Galería",
         navProcess: "Proceso",
         navForm: "Formulario",
@@ -1235,14 +1623,38 @@
         idealFitTag: "Perfil ideal",
         idealFitText: "Ideal para inversionistas interesados en propiedades de 2 o más unidades, adquisiciones value-add, estructuras con financiamiento por dueño, ingreso de renta a largo plazo o estrategias de refinanciar y mantener.",
 
-        benefitsTitle: "Por qué esto beneficia a inversionistas de Estados Unidos",
-        benefitsLead: "Habla con claridad, no con exageración. Los inversionistas serios quieren una ruta organizada, no promesas vagas.",
+        benefitsTitle: "¿Por qué elegir Puerto Rico?",
+        benefitsLead: "Una forma clara de mostrarle al inversionista las razones más fuertes para considerar adquisiciones multifamiliares en Puerto Rico.",
         benefit1Title: "1. Mejor alineación del negocio",
         benefit1Text: "Los inversionistas pueden indicar exactamente qué tipo de oportunidad buscan antes de revisar propiedades, mejorando el encaje desde el inicio.",
         benefit2Title: "2. Enfoque específico en Puerto Rico",
         benefit2Text: "La página está centrada en oportunidades multifamiliares en Puerto Rico, municipios objetivo, tamaño de propiedad y metas de adquisición.",
         benefit3Title: "3. Menos tiempo perdido",
         benefit3Text: "Al evaluar primero tiempo, presupuesto y estrategia, las conversaciones de seguimiento se vuelven más productivas y más serias.",
+        prTab1: "Acceso al Mercado",
+        prTab2: "Demanda de Renta",
+        prTab3: "Opciones de Entrada",
+        prTab4: "Atractivo de Vida",
+        prMarketTitle: "Un mercado estadounidense con ventaja local distintiva",
+        prMarketText: "Puerto Rico ofrece exposición a una jurisdicción de Estados Unidos y, al mismo tiempo, oportunidades por zonas donde el conocimiento local puede marcar la diferencia.",
+        prMarketPoint1: "Uso del dólar y familiaridad bancaria estadounidense",
+        prMarketPoint2: "El conocimiento local puede mejorar la selección del negocio",
+        prMarketPoint3: "Los multifamiliares pueden servir demanda local y de relocalización",
+        prDemandTitle: "La demanda de vivienda apoya estrategias de ingreso",
+        prDemandText: "Las propiedades multifamiliares pueden atraer a inversionistas que buscan renta, diversificación de inquilinos y potencial de mantener a largo plazo en zonas seleccionadas.",
+        prDemandPoint1: "Varias unidades reducen dependencia de un solo inquilino",
+        prDemandPoint2: "Mejoras para renta pueden aumentar el rendimiento",
+        prDemandPoint3: "Los municipios objetivo ayudan a enfocar la búsqueda",
+        prEntryTitle: "Estructuras flexibles pueden abrir la puerta",
+        prEntryText: "Algunas oportunidades pueden evaluarse con efectivo, financiamiento convencional, comercial, FHA o conversaciones de financiamiento por dueño según la propiedad y el vendedor.",
+        prEntryPoint1: "Mejor encaje cuando estrategia y presupuesto están claros",
+        prEntryPoint2: "El financiamiento por dueño puede ayudar a compradores cualificados a moverse más rápido",
+        prEntryPoint3: "El filtro reduce leads débiles o mal alineados",
+        prLifestyleTitle: "Un lugar que se entiende más allá de los números",
+        prLifestyleText: "Puerto Rico combina cultura, ubicación y atractivo de vida con metas prácticas de bienes raíces, fortaleciendo el interés cuando la oportunidad se presenta con claridad.",
+        prLifestylePoint1: "Conexión emocional fuerte para muchos compradores de Estados Unidos",
+        prLifestylePoint2: "Atractivo para dueños a largo plazo e inversionistas que consideran relocalización",
+        prLifestylePoint3: "Una presentación clara convierte curiosidad en interés cualificado",
 
         galleryTitle: "Residencias Multifamiliares de Muestra",
         galleryLead: "Explore el tipo de propiedades multifamiliares y perfiles de inversión que pueden alinearse con sus metas de adquisición.",
@@ -1445,9 +1857,12 @@
       document.getElementById("callTime").placeholder = placeholders[lang].callTime;
       document.getElementById("notes").placeholder = placeholders[lang].notes;
 
-      document.querySelectorAll(".lang-btn").forEach((btn) => {
+      document.querySelectorAll(".lang-option").forEach((btn) => {
         btn.classList.toggle("active", btn.dataset.lang === lang);
       });
+
+      const languageSwitch = document.querySelector(".language-switch");
+      if (languageSwitch) languageSwitch.dataset.active = lang;
 
       updateFilter();
     }
@@ -1515,9 +1930,50 @@
       el.addEventListener("change", updateFilter);
     });
 
-    document.querySelectorAll(".lang-btn").forEach((btn) => {
+    document.querySelectorAll(".lang-option").forEach((btn) => {
       btn.addEventListener("click", () => {
         applyTranslations(btn.dataset.lang);
+      });
+    });
+
+    const menuToggle = document.querySelector(".menu-toggle");
+    const siteMenu = document.getElementById("siteMenu");
+
+    if (menuToggle && siteMenu) {
+      menuToggle.addEventListener("click", () => {
+        const isOpen = siteMenu.classList.toggle("open");
+        menuToggle.classList.toggle("active", isOpen);
+        menuToggle.setAttribute("aria-expanded", String(isOpen));
+      });
+
+      siteMenu.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          siteMenu.classList.remove("open");
+          menuToggle.classList.remove("active");
+          menuToggle.setAttribute("aria-expanded", "false");
+        });
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!siteMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+          siteMenu.classList.remove("open");
+          menuToggle.classList.remove("active");
+          menuToggle.setAttribute("aria-expanded", "false");
+        }
+      });
+    }
+
+    const prTabButtons = document.querySelectorAll(".pr-tab-btn");
+    const prTabPanels = document.querySelectorAll(".pr-tab-content");
+
+    prTabButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const selectedTab = button.dataset.tab;
+
+        prTabButtons.forEach((btn) => btn.classList.toggle("active", btn === button));
+        prTabPanels.forEach((panel) => {
+          panel.classList.toggle("active", panel.dataset.tabPanel === selectedTab);
+        });
       });
     });
 
